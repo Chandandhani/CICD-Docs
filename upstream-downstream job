@@ -1,0 +1,99 @@
+For Jenkins Machine:
+===================
+Prerequisites:
+1. Java (yum install java-1.8.0-openjdk -y)
+2. Maven (yum install maven -y)
+3. SonarScanner (wget -P /opt/ https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.3.0.2102-linux.zip)
+unzip the downloaded file and rename to sonar-scanner
+
+
+
+
+Plugins Required
+================
+Nexus Platform plugin --- for Nexus connectivity
+Sonarqube Scanner  --- for sonarqube server connectivity
+
+
+
+
+
+Changes in Sonar Scanner
+=======================
+vim /opt/sonar-scanner/conf/sonar-scanner.properties
+
+	#----- Default SonarQube server
+	sonar.host.url=http://192.168.56.50:9000
+	
+	#----- Default source code encoding
+	#sonar.sourceEncoding=UTF-8
+	sonar.projectKey=test11
+	sonar.projectName=test11
+	sonar.projectVersion=1.0.0
+	sonar.sources=/var/lib/jenkins/workspace/firstjob-checkout/src
+
+
+
+Changes in /etc/maven/settings.xml file
+======================================
+
+vim /etc/maven/settings.xml
+
+<pluginGroups>
+    <!-- pluginGroup
+     | Specifies a further group identifier to use for plugin lookup.
+    <pluginGroup>com.your.plugins</pluginGroup>
+    -->
+    <plugingroup>org.sonarsource.scanner.maven</plugingroup>    ----- add this line 
+  </pluginGroups>
+
+
+
+    <server>
+      <id>nexus</id>
+      <username>admin</username>
+      <password>admin123</password>
+    </server>
+
+
+
+  <profile>
+        <id>sonar</id>
+        <activation>
+          <activeByDefault>true</activeByDefault>
+        </activation>
+        <properties>
+          <sonar.host.url>
+            http://192.168.56.50:9000
+          </sonar.host.url>
+        </properties>
+   </profile>
+  </profiles>
+
+
+
+
+
+Changes in pom.xml file
+=======================
+	<distributionManagement>
+	
+		<repository>
+			<id>nexus</id>
+			<name>My Nexus Repository</name>
+			<url>http://192.168.56.40:8081/repository/test-release/</url>
+		</repository>
+		
+		<snapshotRepository>
+			<id>nexus</id>
+			<name>My Nexus Repository</name>
+			<url>http://192.168.56.40:8081/repository/devops-snapshot/</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+
+
+
+
+
+
