@@ -5,6 +5,7 @@ Prerequisites:
 2. Maven (yum install maven -y)
 3. SonarScanner (wget -P /opt/ https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.3.0.2102-linux.zip)
 unzip the downloaded file and rename to sonar-scanner
+4. git
 
 
 
@@ -13,6 +14,8 @@ Plugins Required
 ================
 Nexus Platform plugin --- for Nexus connectivity
 Sonarqube Scanner  --- for sonarqube server connectivity
+pipeline utility steps
+nexus artifact uploader
 
 
 
